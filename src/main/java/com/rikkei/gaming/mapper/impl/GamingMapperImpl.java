@@ -5,6 +5,7 @@ import com.rikkei.gaming.entity.GamingGear;
 import com.rikkei.gaming.exception.GearNotFoundException;
 import com.rikkei.gaming.mapper.GamingMapper;
 import com.rikkei.gaming.repository.GamingRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -47,15 +48,12 @@ public class GamingMapperImpl implements GamingMapper {
     @Override
     public GamingGear toEntity(GamingDto entities) {
         List<GamingDto> gamingGear = gamingRepository.findAll().stream().toList();
-        GamingGear gamingGear1 = gamingRepository.findBy();
-        if(gamingGear.isEmpty()) {
-            return gamingRepository.findAll().stream().toList();
-        }
+
         entities.setId(entities.getId());
         entities.setProduct_name(entities.getProduct_name());
         entities.setSeria_code(entities.getSeria_code());
         entities.set_deleted(entities.is_deleted());
-
-        return ;
+        gamingGear.stream().toList();
+        return gamingRepository.findAll().stream().toList();
     }
 }

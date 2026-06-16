@@ -28,8 +28,11 @@ public class GamingServiceImpl implements GamingService {
 
     @Override
     public Optional<GamingDto> getGearById(Long id) {
-
-        return null;
+        Optional<GamingDto> gamingDto = gamingRepository.findById(id);
+        if(gamingDto.isPresent()) {
+            return gamingDto.stream().toList();
+        }
+        return gamingDto.map();
     }
 
     @Override
