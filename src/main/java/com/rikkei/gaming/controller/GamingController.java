@@ -1,52 +1,54 @@
 package com.rikkei.gaming.controller;
 
 import com.rikkei.gaming.dto.GamingDto;
-import com.rikkei.gaming.repository.GamingRepository;
 import com.rikkei.gaming.service.GamingService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/api/gaminggaer")
+@RequestMapping("/api/gaminggear")
 @RequiredArgsConstructor
 public class GamingController {
-    private final GamingRepository gamingRepository;
 
     private final GamingService gamingService;
 
-    //api lấy danh sách GamingGear( có validate)
     @GetMapping
-    public List<GamingDto> getAllGear(){
-        return null;
+    public ResponseEntity<List<GamingDto>> getAllGear() {
+        return ResponseEntity.ok(gamingService.getAllGear());
     }
 
     @GetMapping("/{id}")
-    public Optional<GamingDto> getGearById() {
-        return null;
+    public ResponseEntity<GamingDto> getGearById(@PathVariable Long id) {
+        return ResponseEntity.ok(gamingService.getGearById(id));
     }
-    //api Them moi GamingGear(co validate)
+
     @PostMapping("/add")
-    public GamingDto addGear() {
-        return null;
+    public ResponseEntity<GamingDto> addGear(@Valid @RequestBody GamingDto gamingDto) {
+        return new ResponseEntity<>(gamingService.addGear(gamingDto), HttpStatus.CREATED);
     }
-    //api cap nhat thong tin tat ca thiet bi(co validate)
+
     @PutMapping("/{id}")
-    public GamingDto updateGear() {
-        return null;
+    public ResponseEntity<GamingDto> updateGear(@PathVariable Long id, @Valid @RequestBody GamingDto gamingDto) {
+        return ResponseEntity.ok(gamingService.updateGear(id, gamingDto));
     }
-    //api cap nhat thong tin thiet bi mot phan thong tin(co validate)
+
     @PatchMapping("/{id}")
-    public GamingDto updatePartGear() {
-        return null;
+    public ResponseEntity<GamingDto> updatePartGear(@PathVariable Long id, @RequestBody GamingDto gamingDto) {
+        return ResponseEntity.ok(gamingService.updatePartGear(id, gamingDto));
     }
 
-    //api xoa thiet bi(Soft hoac Hard)
     @DeleteMapping("/{id}")
-    public GamingDto deleteGear() {
-        return null;
+    public ResponseEntity<Map<String, String>> deleteGear(@PathVariable Long id) {
+        gamingService.deleteGearById(id);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Xoa soft-delete thiet bi thanh cong!");
+        return ResponseEntity.ok(response);
     }
-
 }

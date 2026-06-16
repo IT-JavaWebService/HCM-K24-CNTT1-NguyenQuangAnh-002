@@ -1,6 +1,33 @@
 package com.rikkei.gaming.exception;
 
-public class GlobalHandleException  {
-    //chua lam : xay dung co che xu ly ngoai le toan cuc cho toan bo du an
-    // chua lam: khi client gui request ma khong thoa man yeu cua o entity, he thong tu bat loi va tra ve Http status 400, kem danh sach chi tiet cac truong du lieu vi pham
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@RestControllerAdvice
+public class GlobalHandleException {
+
+    @ExceptionHandler(GearNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleGearNotFound(GearNotFoundException ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", ex.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
 }

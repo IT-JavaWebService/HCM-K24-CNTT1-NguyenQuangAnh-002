@@ -16,9 +16,22 @@ public class GamingGear {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String product_name;
-    private String seria_code;
+
+    @Column(name = "product_name")
+    private String productName;
+
+    @Column(name = "seria_code")
+    private String seriaCode;
+
     private Double price;
-    private enum type{ KEYBOARD, MOUSE_HEADSET};
-    private boolean is_deleted;
+
+    @Enumerated(EnumType.STRING)
+    private Type type;
+
+    @Column(name = "is_deleted")
+    private boolean isDeleted = false;
+
+    public enum Type {
+        KEYBOARD, MOUSE_HEADSET
+    }
 }

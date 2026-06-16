@@ -1,12 +1,12 @@
 package com.rikkei.gaming.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.aspectj.lang.annotation.RequiredTypes;
-import org.hibernate.annotations.Type;
 
 @Getter
 @Setter
@@ -14,12 +14,22 @@ import org.hibernate.annotations.Type;
 @NoArgsConstructor
 public class GamingDto {
     private Long id;
+
     @NotBlank(message = "Ten thiet bi khong duoc de trong")
-    private String product_name;
+    private String productName;
+
     @NotBlank(message = "Ma so seri may khong duoc de trong")
-    private String seria_code;
-    //truong price phai co gia tri lon hon 0
+    private String seriaCode;
+
+    @NotNull(message = "Gia thiet bi khong duoc de trong")
+    @Positive(message = "truong price phai co gia tri lon hon 0")
     private Double price;
-    private enum type{ KEYBOARD, MOUSE_HEADSET};
-    private boolean is_deleted;
+
+    private Type type;
+
+    private boolean isDeleted;
+
+    public enum Type {
+        KEYBOARD, MOUSE_HEADSET
+    }
 }
